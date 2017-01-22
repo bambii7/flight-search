@@ -20,8 +20,10 @@
     "grunt-sync": "0.5.2",
     "include-all": "^1.0.0",
     "rc": "1.0.1",
+    "request": "^2.79.0",
     "sails": "~0.12.8",
-    "sails-disk": "~0.10.9"
+    "sails-disk": "~0.10.9",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "debug": "node debug app.js",
