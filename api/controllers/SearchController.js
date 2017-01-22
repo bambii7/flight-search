@@ -39,7 +39,6 @@ module.exports = {
     
     airlines: function (req, res) {
         FlightSearchService.getAirlines().pipe(res);
-        FlightSearchService.getAirlines().pipe(res);
     },
     
     airports: function (req, res) {
