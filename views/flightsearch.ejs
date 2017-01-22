@@ -14,32 +14,32 @@
         <li>+ 1 day</li>
         <li>+ 2 day</li>
     </ul>
-    <div class="result active">
-        <span class="column">
-            airline <br>
-            flight no
-        </span>
-        <span class="column">
-            from: <br>
-                airport name <br>
-                city code <br>
-                time
-        </span>
-        <span class="column">
-            to: <br>
-                airpot name <br>
-                city code <br>
-                time
-        </span>
-        <span class="column">
-            price <br>
-            duration <br>
-            plane short name
-        </span>
-    </div>
+    
 </div>
 
 <!-- search results -->
-<!--
-<script id="entry-template" type="text/x-handlebars-template">
-</script>-->
+<script id="result-template" type="text/x-handlebars-template">
+    <div class="result active">
+        <span class="column">
+            {{airline.name}} <br>
+            {{airline.code}}
+        </span>
+        <span class="column">
+            from: <br>
+                {{start.airportName}} <br>
+                {{start.airportCode}} <br>
+                {{start.dateTime}}
+        </span>
+        <span class="column">
+            to: <br>
+                {{finish.airportName}} <br>
+                {{finish.airportCode}} <br>
+                {{finish.dateTime}}
+        </span>
+        <span class="column">
+            {{price}} <br>
+            {{durationMin}} <br>
+            {{plane.shortName}}
+        </span>
+    </div>
+</script>

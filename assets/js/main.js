@@ -5,6 +5,11 @@ $(function () {
     
     var dateNav = $('#search-results li');
     
+    
+    var templateSource   = $("#result-template").html();
+    var resultTemplate = Handlebars.compile(templateSource);
+    
+    // typeahead
     var airports = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -18,18 +23,22 @@ $(function () {
         name: 'airports',
         display: 'cityCode',
         source: airports,
-        minLength: 1
+        minLength: 2,
         templates: {
             empty: '<div class="empty-message">unable to find any Airports that match</div>',
             suggestion: Handlebars.compile('<div><strong>{{cityCode}}</strong> – {{airportName}}</div>')
         }
     });
     
+    // flight search
     searchForm.submit(function (event) {
         var date = $('input[name=date]').val();
         
         $.post('/search', searchForm.serialize(), function (results) {
             console.log('search results', results);
+            results.forEach(function (result) {
+                $('#search-results').append(resultTemplate(result));
+            });
         });
         
 //        console.log('searching flighs:', searchForm.serialize());
@@ -39,6 +48,8 @@ $(function () {
         event.preventDefault();
     });
     
+    
+    // date nav tabs
     dateNav.click(function (event) {
         var index = dateNav.index(event.target);
         $('#search-results li.active').removeClass('active');
