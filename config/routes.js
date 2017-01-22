@@ -32,9 +32,12 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'flightsearch'
-  }
+    '/': {
+        view: 'flightsearch'
+    },
+    'POST /airlines': 'SearchController.airlines',
+    'POST /airports': 'SearchController.airports',
+    'POST /flight_search/:airline_code': 'SearchController.flight_search',
 
   /***************************************************************************
   *                                                                          *
