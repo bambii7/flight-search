@@ -1,6 +1,7 @@
 $(function () {
     var searchForm = $('form[name=flightSearch]'),
-        strToTime  = d3.timeParse('%d/%m/%Y');
+        timeParse  = d3.timeParse('%d/%m/%Y'),
+        timeFormat = d3.timeFormat("%Y-%m-%d");
     
     var dateNav = $('#search-results li');
     
