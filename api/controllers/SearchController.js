@@ -19,6 +19,9 @@ module.exports = {
             return res.badRequest("missing query parameter `from`, `to` or `date`");
         }
         
+        query.date = Time.strToTime(query.date);
+        console.log('query.date', query.date);
+        
         FlightSearchService.getAirlines()
             .then(function (airlines) {
                 airlines = JSON.parse(airlines);
@@ -30,11 +33,13 @@ module.exports = {
                     search_results = search_results.map(JSON.parse);
                     search_results = _.flatten(search_results, true);
                     res.json(search_results);
-                })
+                }).catch(function (err) {
+                    res.badRequest(err);
+                });
             })
             .catch(function (err) {
                 res.badRequest(err);
-            })
+            });
     }, 
     
     airlines: function (req, res) {
