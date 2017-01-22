@@ -38,7 +38,6 @@ module.exports.routes = {
     'POST /search': 'SearchController.search',
     'POST /airlines': 'SearchController.airlines',
     'POST /airports': 'SearchController.airports',
-    'POST /flight_search/:airline_code': 'SearchController.flight_search',
 
   /***************************************************************************
   *                                                                          *
