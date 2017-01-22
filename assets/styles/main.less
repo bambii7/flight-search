@@ -3,6 +3,7 @@ body {
     font-family: sans-serif;
     background: #F2FBFF;
     color: #333;
+    margin: 0;
 }
 
 #site-wrapper {
@@ -10,6 +11,21 @@ body {
     margin: 0 auto;
 }
 
+/* Form */
+
+/* Typeahead */
+.tt-menu {
+    background: #FFF;
+    .tt-selectable {
+        cursor: pointer;
+        width: 300px;
+        &:hover {
+            background: #47AFF5
+        }
+    }
+}
+
+/* Search Result */
 #search-results {
     ul {
         list-style: none;
@@ -35,4 +51,5 @@ body {
             width: 24%;
         }
     }
+
 }

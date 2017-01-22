@@ -5,14 +5,36 @@ $(function () {
     
     var dateNav = $('#search-results li');
     
+    var airports = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: 'airports?q=%QUERY',
+            wildcard: '%QUERY'
+        }
+    });
     
-        
+    $('.airport-typeahead').typeahead(null, {
+        name: 'airports',
+        display: 'cityCode',
+        source: airports,
+        minLength: 1
+        templates: {
+            empty: '<div class="empty-message">unable to find any Airports that match</div>',
+            suggestion: Handlebars.compile('<div><strong>{{cityCode}}</strong> – {{airportName}}</div>')
+        }
+    });
+    
     searchForm.submit(function (event) {
         var date = $('input[name=date]').val();
         
-        console.log('searching flighs:', searchForm.serialize());
-        console.log(date, strToTime(date));
-        console.log(date, d3.timeDay.offset(strToTime(date), -24));
+        $.post('/search', searchForm.serialize(), function (results) {
+            console.log('search results', results);
+        });
+        
+//        console.log('searching flighs:', searchForm.serialize());
+//        console.log(date, timeParse(date));
+//        console.log(date, d3.timeDay.offset(timeParse(date), -24));
         
         event.preventDefault();
     });

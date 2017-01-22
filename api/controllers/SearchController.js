@@ -20,7 +20,6 @@ module.exports = {
         }
         
         query.date = Time.strToTime(query.date);
-        console.log('query.date', query.date);
         
         FlightSearchService.getAirlines()
             .then(function (airlines) {
