@@ -12,32 +12,29 @@ const _ = require('underscore');
 module.exports = {    
     
     search: function (req, res) {
-        var query = _.pick(req.body, 'date', 'from', 'to'),
-            airline_searches = [];
+        var query = _.pick(req.body, 'date', 'from', 'to');
         
         if (!_.has(query, 'date', 'from', 'to')) {
             return res.badRequest("missing query parameter `from`, `to` or `date`");
         }
         
-        query.date = Time.strToTime(query.date);
+        query.date = Time.parse(query.date);
         
-        FlightSearchService.getAirlines()
-            .then(function (airlines) {
-                airlines = JSON.parse(airlines);
-                airlines.forEach(function (airline) {
-                    let promise = FlightSearchService.searchAirline(airline.code, query);
-                    airline_searches.push(promise);
-                });
-                Promise.all(airline_searches).then(function (search_results) {
-                    search_results = search_results.map(JSON.parse);
-                    search_results = _.flatten(search_results, true);
-                    res.json(search_results);
-                }).catch(function (err) {
-                    res.badRequest(err);
-                });
-            })
-            .catch(function (err) {
-                res.badRequest(err);
+        SearchQuery.create(query)
+            .then(function (search_query) {
+                FlightSearchService.getAirlines()
+                    .then(function (airlines) {
+                        airlines = JSON.parse(airlines);
+                        FlightSearchService.searchAirlinesByDateRange(airlines, search_query, [-2, 2])
+                            .then(function (search_results) {
+                                res.json(search_results);
+                            }).catch(function (err) {
+                                res.badRequest(err);
+                            });
+                    })
+                    .catch(function (err) {
+                        res.badRequest(err);
+                    });
             });
     }, 
     
