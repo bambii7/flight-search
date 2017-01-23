@@ -1,13 +1,10 @@
 $(function () {
-    var searchForm = $('form[name=flightSearch]'),
-        timeParse  = d3.timeParse('%d/%m/%Y'),
-        timeFormat = d3.timeFormat("%Y-%m-%d");
     
-    var dateNav = $('#search-results li');
-    
-    
-    var templateSource   = $("#result-template").html();
-    var resultTemplate = Handlebars.compile(templateSource);
+    var $searchForm = $('form[name=flightSearch]'),
+        $dateNav = $('#search-results ul'),
+        $results = $('#search-results'),
+        templateSource   = $("#result-template").html(),
+        resultTemplate = Handlebars.compile(templateSource);
     
     // typeahead
     var airports = new Bloodhound({
@@ -31,28 +28,42 @@ $(function () {
     });
     
     // flight search
-    searchForm.submit(function (event) {
-        var date = $('input[name=date]').val();
+    $searchForm.submit(function (event) {
+        var date = $('input[name=date]').val(), index = 3;
         
-        $.post('/search', searchForm.serialize(), function (results) {
+        $.post('/search', $searchForm.serialize(), function (results) {
             console.log('search results', results);
-            results.forEach(function (result) {
-                $('#search-results').append(resultTemplate(result));
-            });
+            $('#search-results li, #search-results .result-container').remove();
+            index = Math.round((results.length - 1) / 2);
+            for (i=0; i<results.length; i++) {
+                var $resultEl = $('<div class="result-container">'),
+                    $navEl = $('<li>' + results[i].date + '</li>');
+                
+                if (i === index) {
+                    $resultEl.addClass('active');
+                    $navEl.addClass('active');
+                }
+                
+                $results.append($resultEl);
+                $dateNav.append($navEl);
+                for (var result in results[i].results) {
+                    results[i].results.forEach(function (result) {
+                        $resultEl.append(resultTemplate(result));
+                    });
+                }
+            }
         });
-        
-//        console.log('searching flighs:', searchForm.serialize());
-//        console.log(date, timeParse(date));
-//        console.log(date, d3.timeDay.offset(timeParse(date), -24));
         
         event.preventDefault();
     });
     
-    
     // date nav tabs
-    dateNav.click(function (event) {
-        var index = dateNav.index(event.target);
-        $('#search-results li.active').removeClass('active');
-        dateNav.eq(index).addClass('active');
+    $('#search-results ul').delegate('li', 'click', function (event) {
+        var $dateNavList = $('#search-results li'),
+            $resultList = $('#search-results .result-container'),
+            index = $dateNavList.index(event.target);
+        $('#search-results li.active, #search-results .result-container.active').removeClass('active');
+        $dateNavList.eq(index).addClass('active');
+        $resultList.eq(index).addClass('active');
     });
 })

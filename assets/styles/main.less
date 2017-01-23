@@ -6,6 +6,10 @@ body {
     margin: 0;
 }
 
+h1 {
+    text-align: center;
+}
+
 #site-wrapper {
     max-width: 600px;
     margin: 0 auto;
@@ -41,6 +45,12 @@ body {
             }
         }
     }
+    .result-container {
+        display: none;
+        &.active {
+            display: block;
+        }
+    }
     .result {
         background-color: #C4E1F5;
         border-bottom: 1px solid #646464;
@@ -52,4 +62,26 @@ body {
         }
     }
 
+}
+
+@media screen and (max-width: 600px) {
+    form {
+        input {
+            width: 100%;
+        }
+    }
+    #search-results {
+        ul {
+            li {
+                display: block;
+                width: 100%;
+            }
+        }
+        .result {
+            .column {
+                display: block;
+                width: 100%;
+            }
+        }
+    } 
 }
