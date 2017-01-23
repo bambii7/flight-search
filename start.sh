@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
-#npm install -g sails
 npm install
-PORT=3000 sails lift
+PORT=3000 ./node_modules/sails/bin/sails.js lift
